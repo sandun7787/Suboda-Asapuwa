@@ -1,10 +1,11 @@
 import React from "react";
-import Navbar from "./component/Navbar/navBar"; // Ensure the file exists and the path is correct
-import Home from "./pages/Home/Home.jsx"; // Ensure the file exists and the path is correct
-import { Routes, Route } from "react-router-dom"; // Ensure `react-router-dom` is installed
+import Navbar from "./component/Navbar/navBar"; 
+import Home from "./pages/Home/Home.jsx"; 
+import { Routes, Route } from "react-router-dom"; 
 import Footer from "./component/Footer/Footer.jsx";
 import Classes from "./pages/Classes/Classes.jsx";
-import Schedule from "./pages/Schedule/Schedule.jsx"
+import Schedule from "./pages/Schedule/Schedule.jsx";
+import ContactUs from "./pages/Contact/contact.jsx"; 
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/classes" element={<Classes />} />
-        <Route path="/Schedule" element={<Schedule/>} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/contact" element={<ContactUs />} /> 
       </Routes>
       
       {/* Footer */}
