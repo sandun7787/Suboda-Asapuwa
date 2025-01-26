@@ -6,6 +6,7 @@ import Footer from "./component/Footer/Footer.jsx";
 import Classes from "./pages/Classes/Classes.jsx";
 import Schedule from "./pages/Schedule/Schedule.jsx";
 import ContactUs from "./pages/Contact/contact.jsx"; 
+import Blog from "./pages/Blog/Blog.jsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/classes" element={<Classes />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="blog" element={<Blog/>} />
         <Route path="/contact" element={<ContactUs />} /> 
       </Routes>
       
