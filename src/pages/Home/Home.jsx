@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import h1 from "../../assets/image/h1.jpg";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Importing icons
+import { motion, AnimatePresence, useAnimation } from "framer-motion"; // ✅ Keep only one motion import
+import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import h2 from "../../assets/image/h2.jpg";
+import h3 from "../../assets/image/h3.jpg";
+import h4 from "../../assets/image/h4.jpg";
+import h6 from "../../assets/image/h6.png";
 import in1 from "../../assets/image/in1.jpg";
-import y1 from "../../assets/image/y1.jpg";
-import y2 from "../../assets/image/y2.jpg";
-import y3 from "../../assets/image/y3.jpg";
-import y4 from "../../assets/image/y4.jpg";
-import y5 from "../../assets/image/y5.jpg";
-import y6 from "../../assets/image/y6.jpg";
-import c1 from "../../assets/image/c1.jpg"
+import c1 from "../../assets/image/c1.jpg";
 import person1 from "../../assets/image/person_1.jpg";
 import person2 from "../../assets/image/person_2.jpg";
 import person3 from "../../assets/image/person_3.jpg";
-import B1 from "../../assets/image/B1.jpg"
+import B1 from "../../assets/image/B1.jpg";
 import B2 from "../../assets/image/B2.jpg";
 import B3 from "../../assets/image/B3.jpg";
 import g1 from "../../assets/image/g1.jpg";
@@ -23,15 +25,21 @@ import g4 from "../../assets/image/g4.jpg";
 
 
 
-
 const changingTexts = [
   "Inspiration For Joyful Living.",
   "Change Your World with Yoga.",
   "Find Your Inner Peace Today.",
 ];
 
+const heroImages = [h2, h3, h4, h6]; // Array of hero images
+
 const HomePage = () => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
+
+  const navigate = useNavigate(); // Initialize navigate
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [introVisible, setIntroVisible] = useState(false);
   const [serviceVisible, setServiceVisible] = useState(false);
@@ -47,6 +55,13 @@ const HomePage = () => {
     lessonsConducted: 0,
   });
 
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+
 
   const introRef = useRef(null);
   const serviceRef = useRef(null);
@@ -56,9 +71,36 @@ const HomePage = () => {
   const blogRef = useRef(null);
   const galleryRef = useRef(null);
 
+  const services = [
+    {
+      title: "Meditation",
+      text: "Discover inner peace and clarity.",
+      icon: "fa-solid fa-heart",
+      route: "/meditation",
+    },
+    {
+      title: "Food",
+      text: "Nourish your body and soul.",
+      icon: "fa-solid fa-utensils",
+      route: "/food",
+    },
+    {
+      title: "Meditation Practice",
+      text: "Deepen your meditation journey.",
+      icon: "fa-solid fa-spa",
+      route: "/meditation-practice",
+    },
+    {
+      title: "Accommodation",
+      text: "Find a comfortable retreat.",
+      icon: "fa-solid fa-bed",
+      route: "/accommodation",
+    },
+  ];
+  
+
   useEffect(() => {
-    // Hero Section Animation
-    const interval = setInterval(() => {
+    const textInterval = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {
         setCurrentTextIndex((prevIndex) => (prevIndex + 1) % changingTexts.length);
@@ -66,12 +108,26 @@ const HomePage = () => {
       }, 1000);
     }, 5000);
 
-    return () => clearInterval(interval);
+    const imageInterval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000);
+
+    return () => {
+      clearInterval(textInterval);
+      clearInterval(imageInterval);
+    };
   }, []);
 
-  
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? heroImages.length - 1 : prevIndex - 1
+    );
+  };
 
-  
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+  };
+
 
   useEffect(() => {
     // Scroll Animations
@@ -179,182 +235,188 @@ const HomePage = () => {
  
   return (
     <div className="bg-gray-100 text-black">
-      {/* Hero Section */}
-      <section
-        className="relative bg-cover bg-center h-screen flex items-center justify-start text-left"
+  {/* Hero Section */}
+  <section
+    className="relative bg-cover bg-center h-screen flex items-center justify-start text-left transition-opacity duration-1000"
+    style={{
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImages[currentImageIndex]})`,
+    }}
+  >
+    <AnimatePresence>
+      <motion.div
+        key={currentImageIndex}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 bg-cover bg-center z-0"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${h1})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImages[currentImageIndex]})`,
         }}
-      >
-        <div className="container mx-auto px-4 z-10">
-          <div className="flex items-center justify-start h-full">
-            <div className="w-full md:w-2/3">
-              <h1
-                className={`text-5xl font-bold mb-4 text-white transform transition-all duration-1000 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-                }`}
-              >
-                {changingTexts[currentTextIndex]}
-              </h1>
-              <h2 className="text-lg mb-6 text-white opacity-90 hover:opacity-100">
-                Do Yoga today for a better tomorrow
-              </h2>
-              <Link
-                to="/signup"
-                className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-transform hover:scale-110 hover:shadow-2xl"
-              >
-                15 Day Free Trial
-              </Link>
-            </div>
+      ></motion.div>
+    </AnimatePresence>
+
+    <div className="container mx-auto px-4 z-10">
+      <div className="flex items-center justify-start h-full">
+        <div className="w-full md:w-2/3">
+          <motion.h1
+            key={currentTextIndex}
+            className={`text-5xl font-bold mb-4 text-white transform transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
+            }`}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 1 }}
+          >
+            {changingTexts[currentTextIndex]}
+          </motion.h1>
+          <h2 className="text-lg mb-6 text-white opacity-90 hover:opacity-100">
+            Do Yoga today for a better tomorrow
+          </h2>
+          {/* Buttons for Manual Image Change */}
+          <div className="mt-6 flex space-x-4">
+            <button
+              onClick={handlePreviousImage}
+              className="bg-transparent border border-white text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-white hover:text-black transition-all"
+            >
+              &#x25C0; Previous
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="bg-transparent border border-white text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-white hover:text-black transition-all"
+            >
+              Next &#x25B6;
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* Intro Section */}
-      <section
-        ref={introRef}
-        className={`flex flex-col lg:flex-row h-screen bg-gray-50 transition-all duration-1000 ${
-          introVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <div
-          className={`flex-1 flex justify-center items-center lg:justify-start p-8 transform transition-all duration-1000 ${
-            introVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          }`}
-        >
-          <img
-            src={in1}
-            alt="Yoga Intro"
-            className="w-full max-w-3xl rounded-lg shadow-lg"
-          />
-        </div>
-
-        <div className="flex-1 flex items-center px-12">
-          <div className="text-left">
-            <h2 className="text-5xl font-bold text-gray-900 leading-snug mb-6">
-              Why You Should <br /> Go To Yoga
-            </h2>
-            <p className="text-lg leading-relaxed text-gray-500 mb-8">
-              Far far away, behind the word mountains, far from the countries Vokalia and
-              Consonantia, there live the blind texts. Separated they live in
-              Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-            </p>
-            <ul className="list-none space-y-6">
-              {["Yoga boosts brain power", "Yoga helps you to breathe better", "Yoga improves your strength", "Yoga helps you to focus", "Yoga helps give meaning to your day"].map((item, index) => (
-                <li
-                  key={index}
-                  className={`flex items-center text-lg text-gray-700 opacity-0 animate-fade-in`}
-                  style={{ animationDelay: `${index * 0.5}s` }}
-                >
-                  <span className="mr-4 text-pink-500 text-2xl">✔</span>
-                  <span className="text-gray-900">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section ref={serviceRef} className="bg-gray-100 py-12">
-        <div className="container mx-auto">
-          <div className="flex flex-wrap -mx-4">
-            {[
-              {
-                title: "Healthy Lifestyle",
-                text: "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.",
-                icon: "fas fa-heart",
-              },
-              {
-                title: "Body & Mind Balance",
-                text: "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.",
-                icon: "fas fa-balance-scale",
-              },
-              {
-                title: "Meditation Practice",
-                text: "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.",
-                icon: "fas fa-meditation",
-              },
-              {
-                title: "Edeology",
-                text: "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.",
-                icon: "fas fa-lightbulb",
-              },
-            ].map((service, index) => (
-              <div
-                key={index}
-                className={`w-full md:w-1/4 px-4 mb-8 transform transition-all duration-1000 ${
-                  serviceVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${index * 0.3}s` }}
-              >
-                <div className="bg-white text-center rounded-lg shadow-lg p-6">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white text-3xl">
-                    <i className={service.icon}></i>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-gray-800">{service.title}</h3>
-                  <p className="text-gray-600 text-sm">{service.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Yoga Classes Section */}
-      <section
-  ref={classesRef}
-  className={`ftco-section transition-all duration-1000 ${
-    classesVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      </div>
+    </div>
+  </section>
+    {/* Intro Section */}
+<section
+  ref={introRef}
+  className={`flex flex-col lg:flex-row h-screen bg-gray-50 transition-all duration-1000 ${
+    introVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
   }`}
 >
-  <div className="container mx-auto text-center">
-    <h3 className="text-orange-500 text-2xl uppercase tracking-wide mb-3 animate-fade-in">
-      Yoga Classes
-    </h3>
-    <h2 className="text-4xl font-bold mb-8 animate-fade-in-delayed">
-      Choose Your Level & Focus
-    </h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {[y1, y2, y3, y4, y5, y6].map((y, index) => (
-        <div
-          key={index}
-          className={`group rounded-lg overflow-hidden shadow-lg transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl ${
-            classesVisible ? "opacity-100" : "opacity-0"
-          }`}
-          style={{ animationDelay: `${index * 0.3}s` }}
-        >
-          {/* Image Section with Animation */}
-          <div className="relative overflow-hidden">
-            <img
-              src={y}
-              alt={`Yoga Class ${index + 1}`}
-              className="w-full h-64 object-cover transition-transform duration-700 ease-in-out group-hover:scale-110 group-hover:rotate-1 group-hover:brightness-90"
-            />
-            {/* Gradient Overlay Animation */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-80"></div>
-            {/* Call-to-Action Text Animation */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out">
-              <h3 className="text-white text-3xl font-bold transition-transform duration-500 ease-in-out group-hover:translate-y-0 animate-pulse">
-                Explore Now
-              </h3>
-            </div>
-          </div>
-          {/* Card Content */}
-          <div className="p-6 bg-white">
-            <h3 className="text-2xl font-bold mb-3 text-gray-800">
-              Yoga Program {index + 1}
-            </h3>
-            <p className="text-gray-500">
-              A small river named Duden flows by their place and supplies it with the necessary regelialia.
-            </p>
-          </div>
-        </div>
-      ))}
+  <div
+    className={`flex-1 flex justify-center items-center lg:justify-start p-8 transform transition-all duration-1000 ${
+      introVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+    }`}
+  >
+    <img
+      src={in1}
+      alt="Meditation Intro"
+      className="w-full max-w-3xl rounded-lg shadow-lg"
+    />
+  </div>
+
+  <div className="flex-1 flex flex-col justify-center px-12 space-y-6">
+    <div className="text-left">
+      <h2 className="text-5xl font-bold text-gray-900 leading-snug mb-6">
+        How to Fulfill It?
+      </h2>
+      <p className="text-lg leading-relaxed text-gray-500 mb-4">
+        Buddhist meditation is a combination of <strong>Samatha</strong> and <strong>Vipassana</strong>. Samatha means calming or stilling the mind, making it peaceful and most importantly clear. Vipassana is a technique for developing mindfulness, or awareness, that has been around for thousands of years. This technique is used by non-religious and religious people alike, including agnostics, atheists, and people of every religion and faith.
+      </p>
+      <p className="text-lg leading-relaxed text-gray-500 mb-4">
+        A huge body of study done in recent years shows the benefits of practicing Vipassana meditation daily. According to studies, doing this meditation daily has huge advantages. It makes us happier, less stressed, more focused and effective, more awake—and it leads to eternal bliss.
+      </p>
+      <p className="text-lg leading-relaxed text-gray-500">
+        We would encourage all the laypeople here who are practicing to develop awareness and wisdom. By consistently practicing guided meditation, listening to Dhamma talks, and following proper conduct, one can develop mindfulness and wisdom.
+      </p>
     </div>
   </div>
 </section>
 
+{/* Services Section */}
+
+
+<section
+  ref={serviceRef}
+  className="bg-gradient-to-b from-gray-100 to-gray-200 py-12"
+>
+  <div className="container mx-auto">
+    {/* Section Heading */}
+    <motion.div
+      className="text-center mb-12"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h2 className="text-4xl font-bold text-gray-800">Our Services</h2>
+      <p className="text-gray-600 mt-4">
+        Explore our wide range of services designed to bring balance and joy to your life.
+      </p>
+    </motion.div>
+
+    {/* Services Grid */}
+    <div className="flex flex-wrap -mx-4">
+      {services.map((service, index) => {
+        // Define unique background gradient for each service
+        const gradients = [
+          "bg-gradient-to-r from-blue-400 to-purple-500",
+          "bg-gradient-to-r from-green-400 to-blue-500",
+          "bg-gradient-to-r from-pink-400 to-red-500",
+          "bg-gradient-to-r from-yellow-400 to-orange-500",
+        ];
+        const gradient = gradients[index % gradients.length]; // Rotate through gradients
+
+        return (
+          <motion.div
+            key={index}
+            className="w-full md:w-1/4 px-4 mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              delay: index * 0.2,
+              duration: 0.8,
+              ease: "easeOut",
+            }}
+          >
+            <motion.div
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+              }}
+              className={`bg-white text-center rounded-xl shadow-lg p-8 transform transition-transform`}
+            >
+              {/* Icon with Unique Gradient */}
+              <motion.div
+                className={`w-16 h-16 mx-auto mb-6 ${gradient} rounded-full flex items-center justify-center text-white text-3xl`}
+                whileHover={{
+                  rotate: 360,
+                  transition: { duration: 0.8, ease: "easeInOut" },
+                }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <i className={service.icon}></i>
+              </motion.div>
+
+              {/* Service Title */}
+              <h3 className="text-xl font-bold text-gray-800 mb-2">{service.title}</h3>
+
+              {/* Service Description */}
+              <p className="text-gray-600 text-sm">{service.text}</p>
+
+              {/* Explore More Button */}
+              <motion.button
+                onClick={() => navigate(service.route)}
+                className="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-full shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Explore
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
       {/* Pricing Section */}
       <section ref={pricingRef} className="py-16 bg-gray-50">
@@ -523,51 +585,73 @@ const HomePage = () => {
 </section>;
 
 <section
-  id="counter-section"
-  className="relative bg-cover bg-fixed bg-center py-16"
-  style={{ backgroundImage: `url(${c1})` }}
->
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-  
-  {/* Container */}
-  <div className="relative z-10 container mx-auto">
-    <div className="flex flex-wrap justify-between text-center">
-      {/* Happy Customers */}
-      <div className="w-full md:w-1/4 px-4 mb-6 md:mb-0">
-        <h1 className="text-5xl font-bold text-white mb-2">
-          {counts.happyCustomers.toLocaleString()}
-        </h1>
-        <p className="text-lg text-white">Happy Customers</p>
-      </div>
+      id="counter-section"
+      ref={ref}
+      className="relative bg-cover bg-center bg-no-repeat bg-fixed py-20 flex items-center"
+      style={{ backgroundImage: `url(${c1})` }}
+    >
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-      {/* Yoga Workshops */}
-      <div className="w-full md:w-1/4 px-4 mb-6 md:mb-0">
-        <h1 className="text-5xl font-bold text-white mb-2">
-          {counts.yogaWorkshops.toLocaleString()}
-        </h1>
-        <p className="text-lg text-white">Yoga Workshops</p>
-      </div>
+      {/* Content Container */}
+      <motion.div
+        className="relative z-10 container mx-auto flex flex-col md:flex-row items-center justify-between px-6 lg:px-12"
+        initial="hidden"
+        animate={controls}
+        variants={{
+          hidden: { opacity: 0, y: 50 },
+          visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+        }}
+      >
+        {/* Left Text Content */}
+        <div className="text-white w-full md:w-2/3">
+          <motion.h1
+            className="text-5xl font-bold leading-tight mb-4"
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 1.2 } },
+            }}
+          >
+            Inviting one and all to <br /> come and see.
+          </motion.h1>
+          <motion.div
+            className="w-24 h-1 bg-yellow-400 mb-6"
+            variants={{
+              hidden: { opacity: 0, scaleX: 0 },
+              visible: { opacity: 1, scaleX: 1, transition: { duration: 1 } },
+            }}
+          ></motion.div>
+          <motion.p
+            className="text-lg text-gray-200 leading-relaxed"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 1.2 } },
+            }}
+          >
+            Please take some time to learn about us, our offerings, and our mission. 
+            We look forward to the chance to share our services with you.
+          </motion.p>
+        </div>
 
-      {/* Years of Experience */}
-      <div className="w-full md:w-1/4 px-4 mb-6 md:mb-0">
-        <h1 className="text-5xl font-bold text-white mb-2">
-          {counts.yearsOfExperience.toLocaleString()}
-        </h1>
-        <p className="text-lg text-white">Years of Experience</p>
-      </div>
+        {/* Right Navigation Button */}
+        <motion.div
+          className="mt-6 md:mt-0"
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: { opacity: 1, scale: 1, transition: { duration: 1 } },
+          }}
+        >
+          <button
+            onClick={() => navigate("/about")}
+            className="bg-green-400 text-gray-900 font-semibold text-lg py-3 px-6 rounded-md shadow-md hover:bg-green-500 transition-all"
+          >
+            WHO WE ARE
+          </button>
+        </motion.div>
+      </motion.div>
+    </section>
 
-      {/* Lessons Conducted */}
-      <div className="w-full md:w-1/4 px-4">
-        <h1 className="text-5xl font-bold text-white mb-2">
-          {counts.lessonsConducted.toLocaleString()}
-        </h1>
-        <p className="text-lg text-white">Lessons Conducted</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+{/* Blog Section */}
 {/* Blog Section */}
 <section
   ref={blogRef}
@@ -605,12 +689,12 @@ const HomePage = () => {
         >
           {/* Zoom-in Effect on Hover */}
           <div className="relative overflow-hidden">
-            <a
-              href="#"
+            <div
               className="block h-64 bg-cover bg-center transition-transform duration-500 transform group-hover:scale-105"
               style={{ backgroundImage: `url(${image})` }}
-            ></a>
+            ></div>
           </div>
+
           <div className="p-6">
             <div className="flex items-center space-x-4 mb-4">
               <div>
@@ -630,12 +714,23 @@ const HomePage = () => {
               A small river named Duden flows by their place and supplies it with the
               necessary regelialia.
             </p>
+            {/* Explore More Button */}
+            <div className="text-center mt-4">
+              <button
+                onClick={() => navigate("/blog")} // Navigate to the blog page
+                className="px-5 py-2 bg-pink-500 text-white font-semibold rounded-full shadow-md hover:bg-pink-600 transition-transform duration-300 transform hover:scale-105"
+              >
+                Explore More
+              </button>
+            </div>
           </div>
         </div>
       ))}
     </div>
   </div>
 </section>
+
+
 
 <section
       ref={galleryRef}

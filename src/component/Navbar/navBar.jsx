@@ -41,7 +41,7 @@ function Navbar() {
             isScrolled ? "text-black" : "text-white"
           }`}
         >
-          SUBODA ASAPUWA
+          SRI SUBODA MEDITATION CENTER
         </Link>
       </div>
       <div
@@ -81,16 +81,6 @@ function Navbar() {
             }`}
           >
             Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/classes"
-            className={`no-underline text-base md:mx-4 mx-0 my-2 md:my-0 transition ${
-              isScrolled ? "text-gray-800 hover:text-pink-400" : "text-white hover:text-pink-400"
-            }`}
-          >
-            Classes
           </Link>
         </li>
         <li>
