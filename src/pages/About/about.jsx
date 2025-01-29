@@ -27,7 +27,7 @@ const About = () => {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="container mx-auto h-full flex items-center justify-center">
           <div className="text-center text-white" data-aos="fade-up">
-            <h1 className="text-5xl font-bold mb-4">About Yogalax</h1>
+            <h1 className="text-5xl font-bold mb-4">About Sri Subodha Meditation Center</h1>
             <p className="text-lg">
               <Link to="/" className="text-blue-300 hover:underline mr-2">
                 Home

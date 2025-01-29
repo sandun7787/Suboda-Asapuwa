@@ -276,18 +276,7 @@ const HomePage = () => {
           </h2>
           {/* Buttons for Manual Image Change */}
           <div className="mt-6 flex space-x-4">
-            <button
-              onClick={handlePreviousImage}
-              className="bg-transparent border border-white text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-white hover:text-black transition-all"
-            >
-              &#x25C0; Previous
-            </button>
-            <button
-              onClick={handleNextImage}
-              className="bg-transparent border border-white text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-white hover:text-black transition-all"
-            >
-              Next &#x25B6;
-            </button>
+     
           </div>
         </div>
       </div>
@@ -417,94 +406,6 @@ const HomePage = () => {
     </div>
   </div>
 </section>
-
-      {/* Pricing Section */}
-      <section ref={pricingRef} className="py-16 bg-gray-50">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Pricing</h2>
-          <p className="text-gray-600 text-lg mb-12">
-            Choose a plan that works for you and your needs.
-          </p>
-          <div className="flex flex-wrap justify-center -mx-4">
-            {[
-              {
-                title: "Basic Plan",
-                price: "$19",
-                features: [
-                  "Access to all basic features",
-                  "Community support",
-                  "Email support",
-                ],
-                bgGradient: "from-orange-500 to-red-500",
-              },
-              {
-                title: "Pro Plan",
-                price: "$49",
-                features: [
-                  "Access to all pro features",
-                  "Priority support",
-                  "Advanced tools",
-                ],
-                bgGradient: "from-blue-500 to-green-500",
-              },
-              {
-                title: "Premium Plan",
-                price: "$99",
-                features: [
-                  "Unlimited access to all features",
-                  "24/7 dedicated support",
-                  "Exclusive tools and resources",
-                ],
-                bgGradient: "from-purple-500 to-pink-500",
-              },
-            ].map((plan, index) => (
-              <div
-                key={index}
-                className={`w-full md:w-1/3 px-4 mb-8 transform transition-all duration-1000 ${
-                  pricingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${index * 0.3}s` }}
-              >
-                <div className="bg-white rounded-lg shadow-lg p-8 hover:shadow-2xl transition-transform transform hover:-translate-y-2">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">{plan.title}</h3>
-                  <div className="text-orange-500 text-4xl font-bold mb-6">
-                    {plan.price}
-                    <sup className="text-lg">/mo</sup>
-                  </div>
-                  <ul className="text-gray-600 text-sm space-y-3 mb-6">
-                    {plan.features.map((feature, i) => (
-                      <li key={i}>{feature}</li>
-                    ))}
-                  </ul>
-                  <a
-                    href="#"
-                    className={`bg-gradient-to-r ${plan.bgGradient} text-white py-3 px-6 rounded-lg font-bold hover:shadow-xl transition-transform`}
-                  >
-                    Get Started
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <style jsx>{`
-        .animate-fade-in {
-          animation: fade-in 1s ease-in-out forwards;
-        }
-
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
 
 {/* Successful Stories Section */}
 <section
