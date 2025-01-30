@@ -5,9 +5,9 @@ import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-import h2 from "../../assets/image/h2.jpg";
-import h3 from "../../assets/image/h3.jpg";
-import h4 from "../../assets/image/h4.jpg";
+import h2 from "../../assets/image/m1.jpg";
+import h3 from "../../assets/image/m2.jpg";
+import h4 from "../../assets/image/m3.jpg";
 import h6 from "../../assets/image/h6.png";
 import in1 from "../../assets/image/in1.jpg";
 import c1 from "../../assets/image/c1.jpg";
@@ -615,21 +615,23 @@ const HomePage = () => {
               A small river named Duden flows by their place and supplies it with the
               necessary regelialia.
             </p>
-            {/* Explore More Button */}
-            <div className="text-center mt-4">
-              <button
-                onClick={() => navigate("/blog")} // Navigate to the blog page
-                className="px-5 py-2 bg-pink-500 text-white font-semibold rounded-full shadow-md hover:bg-pink-600 transition-transform duration-300 transform hover:scale-105"
-              >
-                Explore More
-              </button>
-            </div>
           </div>
         </div>
       ))}
     </div>
+
+    {/* Explore More Button */}
+    <div className="text-center mt-8">
+      <button
+        onClick={() => navigate("/blog")} // Navigate to the blog page
+        className="px-8 py-3 bg-pink-500 text-white font-semibold rounded-full shadow-md hover:bg-pink-600 transition-transform duration-300 transform hover:scale-105"
+      >
+        Explore More
+      </button>
+    </div>
   </div>
 </section>
+
 
 
 

@@ -42,7 +42,7 @@ function Navbar() {
 
       <ul className={`md:flex items-center list-none p-0 m-0 absolute md:static top-full left-0 right-0 ${isScrolled ? "bg-white" : "bg-transparent"} md:bg-transparent md:opacity-100 md:translate-y-0 transform ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"} transition duration-500 ease-in-out`}>
         <motion.li whileTap={{ scale: 0.9 }}><Link to="/" className={`no-underline text-base md:mx-4 transition hover:scale-105 ${isScrolled ? "text-gray-800 hover:text-pink-400" : "text-white hover:text-pink-400"}`}>Home</Link></motion.li>
-        <motion.li whileTap={{ scale: 0.9 }}><Link to="/schedule" className={`no-underline text-base md:mx-4 transition hover:scale-105 ${isScrolled ? "text-gray-800 hover:text-pink-400" : "text-white hover:text-pink-400"}`}>Schedule</Link></motion.li>
+       { /*<motion.li whileTap={{ scale: 0.9 }}><Link to="/schedule" className={`no-underline text-base md:mx-4 transition hover:scale-105 ${isScrolled ? "text-gray-800 hover:text-pink-400" : "text-white hover:text-pink-400"}`}>Schedule</Link></motion.li>*/}
         <motion.li whileTap={{ scale: 0.9 }}><Link to="/about" className={`no-underline text-base md:mx-4 transition hover:scale-105 ${isScrolled ? "text-gray-800 hover:text-pink-400" : "text-white hover:text-pink-400"}`}>About</Link></motion.li>
         
         <li className="relative" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
